@@ -1,6 +1,7 @@
 package com.tfm.ms_user_service.controller;
 
 import com.tfm.ms_user_service.model.UserDTO;
+import com.tfm.ms_user_service.model.UserOrder;
 import com.tfm.ms_user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +32,11 @@ public class UserController {
 
     }
 
-    @GetMapping("/{id}")
-    public boolean getUser(@PathVariable String id){
+    @GetMapping("/{id}/order")
+    public ResponseEntity getUser(@PathVariable String id){
+        if(id==null || id.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return userService.getUser(id);
     }
 }

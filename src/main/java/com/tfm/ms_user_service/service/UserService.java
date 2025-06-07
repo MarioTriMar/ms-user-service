@@ -2,6 +2,7 @@ package com.tfm.ms_user_service.service;
 
 import com.tfm.ms_user_service.model.User;
 import com.tfm.ms_user_service.model.UserDTO;
+import com.tfm.ms_user_service.model.UserOrder;
 import com.tfm.ms_user_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,12 +32,15 @@ public class UserService {
         return new ResponseEntity<>("User created", HttpStatus.CREATED);
     }
 
-    public boolean getUser(String userId) {
+    public ResponseEntity getUser(String userId) {
         Optional<User> optUser = userRepository.findById(userId);
         if(optUser.isPresent()){
-            return true;
+            UserOrder userOrder = new UserOrder();
+            userOrder.setId(optUser.get().getId());
+            userOrder.setEmail(optUser.get().getEmail());
+            return new ResponseEntity<>(userOrder, HttpStatus.OK);
         }else{
-            return false;
+            return new ResponseEntity<>("User not fount", HttpStatus.NOT_FOUND);
         }
     }
 }
