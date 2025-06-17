@@ -3,6 +3,7 @@ package com.tfm.ms_user_service.controller;
 import com.tfm.ms_user_service.model.UserDTO;
 import com.tfm.ms_user_service.model.UserOrder;
 import com.tfm.ms_user_service.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,14 @@ import java.util.Map;
 
 @RequestMapping("/user")
 @RestController()
+@Slf4j
 public class UserController {
     @Autowired
     private UserService userService;
 
     @PostMapping()
     public ResponseEntity register(@RequestBody UserDTO userDTO) {
+        log.info("Creating user: {}", userDTO.getName());
         String pwd1 = userDTO.getPassword1();
         String pwd2 = userDTO.getPassword2();
         if (!pwd1.equals(pwd2))
@@ -34,6 +37,7 @@ public class UserController {
 
     @GetMapping("/{id}/order")
     public ResponseEntity getUser(@PathVariable String id){
+        log.info("Searching user by id: {}",id);
         if(id==null || id.isEmpty()){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
